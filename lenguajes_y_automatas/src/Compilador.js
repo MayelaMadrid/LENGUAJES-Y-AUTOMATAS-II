@@ -66,7 +66,7 @@ class Compilador extends Component {
     let n = 0;
     res.map(item => {
       if (item !== "") {
-        if ((item.indexOf(";") !== -1) && (item.length > 1)) { puntoComa = ";"; item = item.slice(0, -1); }
+        if ((item.indexOf(";") !== -1) && (item.length > 1)) { item = item.slice(0, -1); puntoComa = ";"; }
         if (modificadores.indexOf(item) !== -1) modificadoresId.push({ linea: linea, item: item, tipo: "modificador", n: n });
         if (tipo.indexOf(item) !== -1) tipoId.push({ linea: linea, item: item, tipo: "tipo", n: n });
         if (reservadas.indexOf(item) !== -1) reservadaId.push({ linea: linea, item: item, tipo: "reservada", n: n });
@@ -74,9 +74,10 @@ class Compilador extends Component {
         if (operadores.indexOf(item) !== -1) operadoresId.push({ linea: linea, item: item, tipo: "operador", n: n });
         if (booleanLiterales.indexOf(item) !== -1) booleanLiteralesId.push({ linea: linea, item: item, tipo: "booleanLiterales", n: n });
         if (simbolosEspeciales.indexOf(item) !== -1) simbolosEspecialesId.push({ linea: linea, item: item, tipo: "simbolos", n: n });
-        if (puntoComa) simbolosEspecialesId.push({ linea: linea, item: puntoComa, tipo: "simbolos", n: n });
         if (int_literales.test(item)) int_literalesId.push({ linea: linea, item: item, tipo: "int_literales", n: n });
+
         if (!(reservadas.indexOf(item) !== -1) && !(tipo.indexOf(item) !== -1) && !(modificadores.indexOf(item) !== -1) && !(comparadores.indexOf(item) !== -1) && !(simbolosEspeciales.indexOf(item) !== -1) && !(booleanLiterales.indexOf(item) !== -1) && !(operadores.indexOf(item) !== -1) && !(int_literales.test(item))) nombresId.push({ linea: linea, item: item, tipo: "identificador", n: n })
+        if (puntoComa) { n = n + 1; simbolosEspecialesId.push({ linea: linea, item: puntoComa, tipo: "simbolos", n: n }); }
         puntoComa = "";
         n = n + 1;
       } else linea = linea + 1;
@@ -108,9 +109,12 @@ class Compilador extends Component {
       }
       return 0;
     })
-
+    let k = 0;
+    console.log(alphaArray)
     for (let i = 0; i < alphaArray.length; i++) {
-
+      if (k === 1) {
+        break;
+      }
       switch (alphaArray[i].tipo) {
         case "reservada":
           if (alphaArray[i].item === "class") {
@@ -119,35 +123,37 @@ class Compilador extends Component {
           if (alphaArray[i].item === "if" || alphaArray[i].item === "while") {
             if (alphaArray[i + 1].item === "(") { break }
           }
-          else { alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
           break;
         case "modificador":
           if (alphaArray[i + 1].tipo === "reservada") {
             if (alphaArray[i + 1].item === "class") { break }
-          } else { alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
+          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
           break;
         case "identificador":
           if (alphaArray[i + 1].tipo === "simbolos") {
-            break;
+            if (alphaArray[i + 2].tipo !== "identificador")
+              break;
           }
-
           if (alphaArray[i + 1].tipo === "operador" || (alphaArray[i + 1].tipo === "comparador")) {
-            if (alphaArray[i + 1].item !== "=" && (alphaArray[i - 1].tipo !== "tipo")) { break }
+            if (alphaArray[i + 1].item !== "=" && (alphaArray[i - 1].tipo == "tipo" || alphaArray[i - 1].tipo == "identificador")) { break }
             if (alphaArray[i + 1].item == "=" && (alphaArray[i - 1].tipo == "tipo")) { break }
-          } else { alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
-
-
-
+          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
           break;
+
         case "tipo":
-          console.log("Cherries are $3.00 a pound.");
+          if (alphaArray[i + 1].tipo === "identificador") { break }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
           break;
         case "comparador":
-          console.log("Cherries are $3.00 a pound.");
+          if (alphaArray[i + 1].tipo === "identificador" || alphaArray[i + 1].tipo === "int_literales") { break }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "comparador") }
           break;
         case "operador":
-          console.log("Mangoes and papayas are $2.79 a pound.");
+          if ((alphaArray[i + 1].tipo === "identificador") || (alphaArray[i + 1].tipo === "int_literales")) { break }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "operador") }
           break;
+
         case "booleanLiterales":
           console.log("Mangoes and papayas are $2.79 a pound.");
           break;
