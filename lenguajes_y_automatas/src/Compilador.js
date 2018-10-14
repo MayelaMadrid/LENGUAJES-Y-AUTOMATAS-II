@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import "./estilos.css";
+import App from "./App.js";
+
 let modificadoresId = [{}];
 let reservadaId = [];
 let tipoId = [];
@@ -185,32 +186,8 @@ class Compilador extends Component {
 
   render() {
     return (
-      <div className="col-8 shadow">
-        <div className="content">
-          <div className="left-area">
-            <textarea
-              ref="codigo"
-              spellCheck="false"
-              className="data-input"
-              rows="37"
-              cols="79"
-            />
-          </div>
-          <div className="mid">
-            <button className="boton_run" onClick={this.compilador}>
-              RUN
-            </button>
-          </div>
-          <div className="right-area">
-            <textarea
-              spellCheck="false"
-              className="data-input"
-              rows="37"
-              cols="79"
-              readOnly
-            />
-          </div>
-        </div>
+      <div>
+        <App/>
       </div>
     );
   }
