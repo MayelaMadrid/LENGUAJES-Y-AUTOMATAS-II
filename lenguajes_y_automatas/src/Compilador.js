@@ -111,9 +111,7 @@ class Compilador extends Component {
     let k = 0;
     console.log(alphaArray)
     for (let i = 0; i < alphaArray.length; i++) {
-      if (k === 1) {
-        break;
-      }
+
       switch (alphaArray[i].tipo) {
         case "reservada":
           if (alphaArray[i].item === "class") {
@@ -154,13 +152,22 @@ class Compilador extends Component {
           break;
 
         case "booleanLiterales":
-          console.log("Mangoes and papayas are $2.79 a pound.");
+          if ((alphaArray[i - 1].tipo === "comparador") || (alphaArray[i - 1].tipo === "operador") || (alphaArray[i - 1].tipo === "simbolos")) {
+            if ((alphaArray[i - 1].item === "=!") || (alphaArray[i - 1].item === "=") || (alphaArray[i - 1].item === "==")) { break }
+            if ((alphaArray[i - 1].item === "(") && (alphaArray[i + 1].item === ")")) { break }
+          }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "booleN") }
           break;
+
         case "int_literales":
-          console.log("Mangoes and papayas are $2.79 a pound.");
+          if ((alphaArray[i + 1].item === ";") && (alphaArray[i - 1].item === "=")) { break }
+          if ((alphaArray[i + 1].tipo === "comparador") || (alphaArray[i - 1].tipo === "comparador")) { break }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "operador") }
           break;
         case "simbolos":
-          console.log("Mangoes and papayas are $2.79 a pound.");
+          if ((alphaArray[i].item === ";") && ((alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales"))) { break }
+
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "SIM") }
           break;
         default:
           console.log("Sorry, we are out of " + + ".");
