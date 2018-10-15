@@ -124,12 +124,12 @@ class Compilador extends Component {
           if (alphaArray[i].item === "if" || alphaArray[i].item === "while") {
             if (alphaArray[i + 1].item === "(") { break }
           }
-          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "reservada") }
           break;
         case "modificador":
           if (alphaArray[i + 1].tipo === "reservada") {
             if (alphaArray[i + 1].item === "class") { break }
-          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
+          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "modificador") }
           break;
         case "identificador":
           if (alphaArray[i + 1].tipo === "simbolos") {
@@ -137,14 +137,14 @@ class Compilador extends Component {
               break;
           }
           if (alphaArray[i + 1].tipo === "operador" || (alphaArray[i + 1].tipo === "comparador")) {
-            if (alphaArray[i + 1].item !== "=" && (alphaArray[i - 1].tipo == "tipo" || alphaArray[i - 1].tipo == "identificador")) { break }
-            if (alphaArray[i + 1].item == "=" && (alphaArray[i - 1].tipo == "tipo")) { break }
-          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
+            if (alphaArray[i + 1].item !== "=" && (alphaArray[i - 1].tipo === "tipo" || alphaArray[i - 1].tipo === "identificador")) { break }
+            if (alphaArray[i + 1].item === "=" && (alphaArray[i - 1].tipo === "tipo")) { break }
+          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "identificador") }
           break;
 
         case "tipo":
           if (alphaArray[i + 1].tipo === "identificador") { break }
-          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item) }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "tipo") }
           break;
         case "comparador":
           if (alphaArray[i + 1].tipo === "identificador" || alphaArray[i + 1].tipo === "int_literales") { break }
@@ -226,7 +226,7 @@ class Compilador extends Component {
           </div>
           <div className="col-md-10 col-10">
             <div className="col-md-12 col-12 element ml-4 mt-3">EXPLORER</div>
-            <div className="col-md-12 col-12 menu-drops ml-2 mt-1"><Ionicon icon="md-arrow-dropright" color="white" /> Open Editors <span class="badge badge-primary"> 1 Unsaved</span></div>
+            <div className="col-md-12 col-12 menu-drops ml-2 mt-1"><Ionicon icon="md-arrow-dropright" color="white" /> Open Editors <span className="badge badge-primary"> 1 Unsaved</span></div>
             <div className="col-md-12 col-12 menu-drops ml-2"><Ionicon icon="md-arrow-dropright" color="white" className="arrow-open" /> Lenguajes_y_automatas</div>
             <div className="col-md-12 col-12 element ml-2 mt-1"><Ionicon icon="md-arrow-dropright" color="white" /><Ionicon icon="md-folder" color="#6262ff" /> .vs</div>
             <div className="col-md-12 col-12 element ml-2"><Ionicon icon="md-arrow-dropright" color="white" className="arrow-open" /><Ionicon icon="md-folder-open" color="#6262ff" /> icon</div>
