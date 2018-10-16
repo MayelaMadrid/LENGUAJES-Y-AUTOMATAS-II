@@ -160,7 +160,7 @@ class Compilador extends Component {
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "comparador") }
           break;
         case "operador":
-          if ((alphaArray[i + 1].tipo === "identificador") || (alphaArray[i + 1].tipo === "int_literales")) {
+          if ((alphaArray[i + 1].tipo === "identificador") || (alphaArray[i + 1].tipo === "int_literales") || (alphaArray[i + 1].tipo === "booleanLiterales")) {
             if ((alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales")) { break }
           }
 
@@ -173,7 +173,7 @@ class Compilador extends Component {
             if ((alphaArray[i - 1].item === "=!") || (alphaArray[i - 1].item === "=") || (alphaArray[i - 1].item === "==")) { break }
             if ((alphaArray[i - 1].item === "(") && (alphaArray[i + 1].item === ")")) { break }
           }
-          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "booleN") }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "booleano") }
           break;
 
         case "int_literales":
@@ -183,13 +183,14 @@ class Compilador extends Component {
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "int literales") }
           break;
         case "simbolos":
-          if ((alphaArray[i].item === ";") && ((alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales"))) { break }
+
+          if ((alphaArray[i].item === ";") && ((alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales") || (alphaArray[i - 1].tipo === "booleanLiterales"))) { break }
           if ((alphaArray[i].item === "}") && ((alphaArray[i - 1].item === "}") || (alphaArray[i - 1].item === ";"))) { break }
           if ((alphaArray[i].item === "{") && ((alphaArray[i - 1].item === ")") || (alphaArray[i - 1].tipo === "identificador"))) { break }
           if ((alphaArray[i].item === "(") && ((alphaArray[i - 1].tipo === "reservada"))) { break }
 
           if ((alphaArray[i].item === ")") && ((alphaArray[i - 1].item === ";") || (alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales"))) { break }
-          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "SIM") }
+          else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "simbolo") }
           break;
         default:
           alert("AIUAAAA :(");
@@ -235,7 +236,7 @@ class Compilador extends Component {
     }
 
     var duplicadosEliminados = eliminarObjetosDuplicados(arrayDeclaradas, 'item');
-    console.log(duplicadosEliminados);/// tabla de simbolos
+    console.log("tabla", duplicadosEliminados);/// tabla de simbolos
 
 
     console.log("variables no definidas ", uniqueResultOne);
@@ -245,7 +246,7 @@ class Compilador extends Component {
       if (duplicadosEliminados[i].tipo === "int" && !int_literales.test(duplicadosEliminados[i].valor)) {
         arrayMalDeclaradas.push(duplicadosEliminados[i])
       }
-      if (duplicadosEliminados[i].tipo === "boolean" && (duplicadosEliminados[i].valor !== "true" || duplicadosEliminados[i].valor !== "false")) {
+      if (duplicadosEliminados[i].tipo === "boolean" && ((duplicadosEliminados[i].valor !== "true") && (duplicadosEliminados[i].valor !== "false"))) {
         arrayMalDeclaradas.push(duplicadosEliminados[i])
       }
       if (duplicadosEliminados[i].tipo === "string" && !ide_literales.test(duplicadosEliminados[i].valor)) {
