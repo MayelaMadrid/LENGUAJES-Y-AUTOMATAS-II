@@ -1,0 +1,10 @@
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+    resultado = menor;
+    if ( x > y ) {
+        resultado = mayor;
+    }
+}
