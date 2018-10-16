@@ -22,19 +22,11 @@ class Compilador extends Component {
     operadores: ["*", "+", "-", "/", "="],
     booleanLiterales: ["true", "false"],
     simbolosEspeciales: [")", "(", "{", "}", ";"],
-    int_literales: new RegExp("^[0-9]+$")
+    int_literales: new RegExp("^[0-9]+$"),
+    ide_literales: new RegExp("^[a-zA-Z]+$")
 
   };
-  validaCaracter = event => {
-    let regex = new RegExp("");
-    let key = String.fromCharCode(
-      !event.charCode ? event.which : event.charCode
-    );
-    if (!regex.test(key)) {
-      event.preventDefault();
-      return false;
-    }
-  };
+
 
   compilador = () => {
     let linea = 1;
@@ -47,7 +39,8 @@ class Compilador extends Component {
     simbolosEspecialesId = [];
     booleanLiteralesId = [];
     int_literalesId = [];
-
+    let booleanos = ["true", "false"]
+    let valorString = [];
     let valor = this.refs.codigo.value;
     let modificadores = this.state.modificadores;
     let tipo = this.state.tipo;
@@ -57,6 +50,7 @@ class Compilador extends Component {
     let simbolosEspeciales = this.state.simbolosEspeciales;
     let booleanLiterales = this.state.booleanLiterales;
     let int_literales = this.state.int_literales;
+    let ide_literales = this.state.ide_literales;
 
     var str = valor.trim().split("\n").join(" ");
     str = str.split("\t").join(" ")
@@ -78,7 +72,10 @@ class Compilador extends Component {
         if (simbolosEspeciales.indexOf(item) !== -1) { simbolosEspecialesId.push({ linea: linea, item: item, tipo: "simbolos", n: n }); if (item != ")" && item != "(") linea = linea + 1; }
         if (int_literales.test(item)) int_literalesId.push({ linea: linea, item: item, tipo: "int_literales", n: n });
 
-        if (!(reservadas.indexOf(item) !== -1) && !(tipo.indexOf(item) !== -1) && !(modificadores.indexOf(item) !== -1) && !(comparadores.indexOf(item) !== -1) && !(simbolosEspeciales.indexOf(item) !== -1) && !(booleanLiterales.indexOf(item) !== -1) && !(operadores.indexOf(item) !== -1) && !(int_literales.test(item))) nombresId.push({ linea: linea, item: item, tipo: "identificador", n: n });
+        if (!(reservadas.indexOf(item) !== -1) && !(tipo.indexOf(item) !== -1) && !(modificadores.indexOf(item) !== -1) && !(comparadores.indexOf(item) !== -1) && !(simbolosEspeciales.indexOf(item) !== -1) && !(booleanLiterales.indexOf(item) !== -1) && !(operadores.indexOf(item) !== -1) && !(int_literales.test(item))) {
+          nombresId.push({ linea: linea, item: item, tipo: "identificador", n: n });
+        }
+
         if (puntoComa) { n = n + 1; simbolosEspecialesId.push({ linea: linea, item: puntoComa, tipo: "simbolos", n: n }); linea = linea + 1; }
         puntoComa = "";
         n = n + 1;
@@ -243,6 +240,20 @@ class Compilador extends Component {
 
     console.log("variables no definidas ", uniqueResultOne);
     console.log("variables repetidas ", repetidos);
+    let arrayMalDeclaradas = [];
+    for (let i = 0; i < duplicadosEliminados.length; i++) {
+      if (duplicadosEliminados[i].tipo === "int" && !int_literales.test(duplicadosEliminados[i].valor)) {
+        arrayMalDeclaradas.push(duplicadosEliminados[i])
+      }
+      if (duplicadosEliminados[i].tipo === "booleanLiterales" && (duplicadosEliminados[i].valor !== "true" || duplicadosEliminados[i].valor !== "false")) {
+        arrayMalDeclaradas.push(duplicadosEliminados[i])
+      }
+      if (duplicadosEliminados[i].tipo === "string" && !ide_literales.test(duplicadosEliminados[i].valor)) {
+        arrayMalDeclaradas.push(duplicadosEliminados[i])
+      }
+    }
+    console.log(arrayMalDeclaradas);
+
   };
 
 
