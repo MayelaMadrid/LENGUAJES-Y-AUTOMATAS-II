@@ -413,9 +413,11 @@ class Compilador extends Component {
               </table> : <div>cargando</div>}
           </div>
           <div ref="out">
+
             {nodefinidas ?
               <table class="table table-dark">
                 <thead>
+                  No definidas
                   <tr>
                     <th scope="col">Nombre identificador</th>
                     <th scope="col">tipo de dato</th>
@@ -444,6 +446,7 @@ class Compilador extends Component {
             {malDeclaradas ?
               <table class="table table-dark">
                 <thead>
+                  MAL DECLARADAS
                   <tr>
                     <th scope="col">Nombre identificador</th>
                     <th scope="col">tipo de dato</th>
@@ -472,6 +475,7 @@ class Compilador extends Component {
             {repetidas ?
               <table class="table table-dark">
                 <thead>
+                  REPETIDAS
                   <tr>
                     <th scope="col">Nombre identificador</th>
                     <th scope="col">tipo de dato</th>
