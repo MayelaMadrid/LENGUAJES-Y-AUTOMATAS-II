@@ -26,7 +26,10 @@ class Compilador extends Component {
     simbolosEspeciales: [")", "(", "{", "}", ";"],
     int_literales: new RegExp("^[0-9]+$"),
     ide_literales: new RegExp("^[a-zA-Z]+$"),
-    tabla: []
+    tabla: [],
+    nodefinidas: [],
+    malDeclaradas: [],
+    repetidas: []
 
   };
 
@@ -243,7 +246,9 @@ class Compilador extends Component {
 
 
     console.log("variables no definidas ", uniqueResultOne);
+    this.setState({ nodefinidas: uniqueResultOne });
     console.log("variables repetidas ", repetidos);
+    this.setState({ repetidas: repetidos });
     let arrayMalDeclaradas = [];
     for (let i = 0; i < duplicadosEliminados.length; i++) {
       if (duplicadosEliminados[i].tipo === "int" && !int_literales.test(duplicadosEliminados[i].valor)) {
@@ -257,6 +262,7 @@ class Compilador extends Component {
       }
     }
     console.log("Variables mal declaradas", arrayMalDeclaradas);
+    this.setState({ malDeclaradas: arrayMalDeclaradas });
     let aux = "";
     let aux2 = "";
     let aux3 = "";
@@ -276,12 +282,24 @@ class Compilador extends Component {
   };
 
 
+  cambio = () => {
+    this.refs.out.style.display = "block";
+    this.refs.tabla.style.display = "none";
+  }
+  tabla = () => {
+    this.refs.out.style.display = "none";
+    this.refs.tabla.style.display = "block";
 
+
+  }
 
 
   render() {
 
     let duplicadosEliminadoss = this.state.tabla;
+    let nodefinidas = this.state.nodefinidas;
+    let repetidas = this.state.repetidas;
+    let malDeclaradas = this.state.malDeclaradas;
     return (
       <div className="row">
 
@@ -348,10 +366,10 @@ class Compilador extends Component {
         <div className="col-md-10 col-10 output">
           <ul className="nav nav-pills mt-1">
             <li className="nav-item">
-              <a className="nav-link" href="#">Output</a>
+              <a className="nav-link" href="#" onClick={this.cambio}>Output</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Tabla de Simbolos</a>
+              <a className="nav-link" href="#" onClick={this.tabla}>Tabla de Simbolos</a>
             </li>
           </ul>
         </div>
@@ -359,35 +377,123 @@ class Compilador extends Component {
         <div className="col-md-2 col-2">
         </div>
         <div className="col-md-10 col-10 output-option">
-          {duplicadosEliminadoss ?
-            <table class="table table-dark">
-              <thead>
-                <tr>
-                  <th scope="col">Nombre identificador</th>
-                  <th scope="col">tipo de dato</th>
-                  <th scope="col">valor</th>
-                  <th scope="col">Linea</th>
-                  <th scope="col">Posicion</th>
-                </tr>
-              </thead>
-              <tbody>
-                {duplicadosEliminadoss.map(n => {
+          <div ref="tabla">
+            {duplicadosEliminadoss ?
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre identificador</th>
+                    <th scope="col">tipo de dato</th>
+                    <th scope="col">valor</th>
+                    <th scope="col">Linea</th>
+                    <th scope="col">Posicion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {duplicadosEliminadoss.map(n => {
 
-                  return (
-                    <tr key={n}>
-                      <th scope="row">{n.item}</th>
-                      <td>{n.tipo}</td>
-                      <td>{n.valor}</td>
-                      <td>{n.linea}</td>
-                      <td>{n.posicion}</td>
-                    </tr>
+                    return (
+                      <tr key={n}>
+                        <th scope="row">{n.item}</th>
+                        <td>{n.tipo}</td>
+                        <td>{n.valor}</td>
+                        <td>{n.linea}</td>
+                        <td>{n.posicion}</td>
+                      </tr>
 
 
-                  )
-                })}
-              </tbody>
-            </table> : <div>kdfsdklj</div>}
+                    )
+                  })}
+                </tbody>
+              </table> : <div>cargando</div>}
+          </div>
+          <div ref="out">
+            {nodefinidas ?
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre identificador</th>
+                    <th scope="col">tipo de dato</th>
+                    <th scope="col">Linea</th>
+                    <th scope="col">Posicion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {nodefinidas.map(n => {
 
+                    return (
+                      <tr key={n}>
+                        <th scope="row">{n.item}</th>
+                        <td>{n.tipo}</td>
+
+                        <td>{n.linea}</td>
+                        <td>{n.n}</td>
+                      </tr>
+
+
+                    )
+                  })}
+                </tbody>
+              </table> : <div>cargando</div>}
+            <div>--------------------------------------------------------</div>
+            {malDeclaradas ?
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre identificador</th>
+                    <th scope="col">tipo de dato</th>
+                    <th scope="col">valor</th>
+                    <th scope="col">Linea</th>
+                    <th scope="col">Posicion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {malDeclaradas.map(n => {
+
+                    return (
+                      <tr key={n}>
+                        <th scope="row">{n.item}</th>
+                        <td>{n.tipo}</td>
+                        <td>{n.valor}</td>
+                        <td>{n.linea}</td>
+                        <td>{n.posicion}</td>
+                      </tr>
+
+
+                    )
+                  })}
+                </tbody>
+              </table> : <div>cargando</div>}
+            {repetidas ?
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre identificador</th>
+                    <th scope="col">tipo de dato</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Linea</th>
+                    <th scope="col">Posicion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {repetidas.map(n => {
+
+                    return (
+                      <tr key={n}>
+                        <th scope="row">{n.item}</th>
+                        <td>{n.tipo}</td>
+                        <td>{n.valor}</td>
+                        <td>{n.linea}</td>
+                        <td>{n.n}</td>
+                      </tr>
+
+
+                    )
+                  })}
+                </tbody>
+              </table> : <div>cargando</div>}
+            <div>--------------------------------------------------------</div>
+          </div>
 
         </div>
 
