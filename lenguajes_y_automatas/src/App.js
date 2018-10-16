@@ -88,44 +88,8 @@ class App extends Component {
         <div className="col-md-2 col-2">
         </div>
         <div className="col-md-10 col-10 output-option">
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          </div>
-
+          
+        </div>
       </div>
     );
   }

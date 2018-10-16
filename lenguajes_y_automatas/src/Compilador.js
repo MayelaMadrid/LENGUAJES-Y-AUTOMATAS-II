@@ -30,7 +30,6 @@ class Compilador extends Component {
 
   };
 
-
   compilador = () => {
     let linea = 1;
     modificadoresId = [];
@@ -62,6 +61,7 @@ class Compilador extends Component {
     console.log(res);
     let n = 0;
     let counter = 0;
+    let count = 0;
     res.map(item => {
       if (item !== "") {
         counter = 0;
@@ -82,11 +82,16 @@ class Compilador extends Component {
         if (puntoComa) { n = n + 1; simbolosEspecialesId.push({ linea: linea, item: puntoComa, tipo: "simbolos", n: n }); linea = linea + 1; }
         puntoComa = "";
         n = n + 1;
-      } /*else {
-        counter = counter + 1;
-        if (counter > 2)
-          linea = linea + 1;
-      }*/
+        count = 0;
+      } else {
+        if (item === "") {
+          count++;
+          if (count >= 5) {
+            linea++;
+            count = 0;
+          }
+        }
+      }
 
     });
 
