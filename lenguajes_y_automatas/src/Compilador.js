@@ -12,6 +12,8 @@ let operadoresId = [];
 let booleanLiteralesId = [];
 let simbolosEspecialesId = [];
 let int_literalesId = [];
+var duplicadosEliminados;
+let icono;
 
 class Compilador extends Component {
   state = {
@@ -23,7 +25,8 @@ class Compilador extends Component {
     booleanLiterales: ["true", "false"],
     simbolosEspeciales: [")", "(", "{", "}", ";"],
     int_literales: new RegExp("^[0-9]+$"),
-    ide_literales: new RegExp("^[a-zA-Z]+$")
+    ide_literales: new RegExp("^[a-zA-Z]+$"),
+    tabla: []
 
   };
 
@@ -123,7 +126,7 @@ class Compilador extends Component {
         case "reservada":
           if (alphaArray[i].item === "class") {
             if (alphaArray[i + 1].tipo === "identificador") {
-              arrayDeclaradas.push({ item: alphaArray[i + 1].item, posicion: alphaArray[i + 1].n, linea: alphaArray[i + 1].linea });
+              arrayDeclaradas.push({ item: alphaArray[i + 1].item, posicion: alphaArray[i + 1].n, linea: alphaArray[i + 1].linea, tipo: "clase" });
               break;
             }
           }
@@ -163,8 +166,6 @@ class Compilador extends Component {
           if ((alphaArray[i + 1].tipo === "identificador") || (alphaArray[i + 1].tipo === "int_literales") || (alphaArray[i + 1].tipo === "booleanLiterales")) {
             if ((alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales")) { break }
           }
-
-
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "operador") }
           break;
 
@@ -220,6 +221,7 @@ class Compilador extends Component {
     for (var i = 0; i < arrayOrdenado.length - 1; i++) {
       if (compareFunction(arrayOrdenado[i + 1], arrayOrdenado[i]) === 0) {
         repetidos.push(arrayOrdenado[i]);
+        repetidos.push(arrayOrdenado[i + 1]);
       }
     }
 
@@ -235,8 +237,9 @@ class Compilador extends Component {
       return nuevoArray;
     }
 
-    var duplicadosEliminados = eliminarObjetosDuplicados(arrayDeclaradas, 'item');
+    duplicadosEliminados = eliminarObjetosDuplicados(arrayDeclaradas, 'item');
     console.log("tabla", duplicadosEliminados);/// tabla de simbolos
+    this.setState({ tabla: duplicadosEliminados })
 
 
     console.log("variables no definidas ", uniqueResultOne);
@@ -254,13 +257,31 @@ class Compilador extends Component {
       }
     }
     console.log("Variables mal declaradas", arrayMalDeclaradas);
+    let aux = "";
+    let aux2 = "";
+    let aux3 = "";
+    for (let i = 0; i < alphaArray.length; i++) {
+
+      if (alphaArray[i].item === "=" && alphaArray[i].tipo === "operador") {
+        if (alphaArray[i - 1].tipo === "identificador" && alphaArray[i - 2].tipo !== "tipo") {
+          console.log(alphaArray[i - 1].tipo)
+          if (!duplicadosEliminados.includes(alphaArray[i - 1].item)) {
+
+          }
+        }
+      }
+    }
+
 
   };
 
 
 
 
+
   render() {
+
+    let duplicadosEliminadoss = this.state.tabla;
     return (
       <div className="row">
 
@@ -338,14 +359,37 @@ class Compilador extends Component {
         <div className="col-md-2 col-2">
         </div>
         <div className="col-md-10 col-10 output-option">
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          </div>
+          {duplicadosEliminadoss ?
+            <table class="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre identificador</th>
+                  <th scope="col">tipo de dato</th>
+                  <th scope="col">valor</th>
+                  <th scope="col">Linea</th>
+                  <th scope="col">Posicion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {duplicadosEliminadoss.map(n => {
+
+                  return (
+                    <tr key={n}>
+                      <th scope="row">{n.item}</th>
+                      <td>{n.tipo}</td>
+                      <td>{n.valor}</td>
+                      <td>{n.linea}</td>
+                      <td>{n.posicion}</td>
+                    </tr>
+
+
+                  )
+                })}
+              </tbody>
+            </table> : <div>kdfsdklj</div>}
+
+
+        </div>
 
       </div>
     );
