@@ -76,9 +76,17 @@ body {
   position: fixed !important;
   right: 0 !important;
   margin: 3px 0 0 0;
-  background-color: #5cb85c;
+  background-color: #16f316;
   color: white;
   font-weight: bold;
+}
+
+.navbar-execute:hover {
+  background-color: #12ca12;
+}
+
+.navbar-execute:active {
+  background-color: #069c06;
 }
 
 .code {

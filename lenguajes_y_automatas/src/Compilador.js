@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import App from "./App.js";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import "./estilos.css";
 import Ionicon from 'react-ionicons';
 
-let modificadoresId = [{}];
+let modificadoresId = [];
 let reservadaId = [];
 let tipoId = [];
 let nombresId = [];
@@ -48,8 +47,7 @@ class Compilador extends Component {
     simbolosEspecialesId = [];
     booleanLiteralesId = [];
     int_literalesId = [];
-    let gg = this.refs.codigo.rows;
-    console.log(gg);
+
     let valor = this.refs.codigo.value;
     let modificadores = this.state.modificadores;
     let tipo = this.state.tipo;
@@ -60,15 +58,16 @@ class Compilador extends Component {
     let booleanLiterales = this.state.booleanLiterales;
     let int_literales = this.state.int_literales;
 
-
     var str = valor.trim().split("\n").join(" ");
     str = str.split("\t").join(" ")
     var res = str.split(" ");
     let puntoComa = "";
     console.log(res);
     let n = 0;
+    let counter = 0;
     res.map(item => {
       if (item !== "") {
+        counter = 0;
         if ((item.indexOf(";") !== -1) && (item.length > 1)) { item = item.slice(0, -1); puntoComa = ";"; }
         if (modificadores.indexOf(item) !== -1) modificadoresId.push({ linea: linea, item: item, tipo: "modificador", n: n });
         if (tipo.indexOf(item) !== -1) tipoId.push({ linea: linea, item: item, tipo: "tipo", n: n });
@@ -76,14 +75,19 @@ class Compilador extends Component {
         if (comparadores.indexOf(item) !== -1) comparadoresId.push({ linea: linea, item: item, tipo: "comparador", n: n });
         if (operadores.indexOf(item) !== -1) operadoresId.push({ linea: linea, item: item, tipo: "operador", n: n });
         if (booleanLiterales.indexOf(item) !== -1) booleanLiteralesId.push({ linea: linea, item: item, tipo: "booleanLiterales", n: n });
-        if (simbolosEspeciales.indexOf(item) !== -1) simbolosEspecialesId.push({ linea: linea, item: item, tipo: "simbolos", n: n });
+        if (simbolosEspeciales.indexOf(item) !== -1) { simbolosEspecialesId.push({ linea: linea, item: item, tipo: "simbolos", n: n }); if (item != ")" && item != "(") linea = linea + 1; }
         if (int_literales.test(item)) int_literalesId.push({ linea: linea, item: item, tipo: "int_literales", n: n });
 
-        if (!(reservadas.indexOf(item) !== -1) && !(tipo.indexOf(item) !== -1) && !(modificadores.indexOf(item) !== -1) && !(comparadores.indexOf(item) !== -1) && !(simbolosEspeciales.indexOf(item) !== -1) && !(booleanLiterales.indexOf(item) !== -1) && !(operadores.indexOf(item) !== -1) && !(int_literales.test(item))) nombresId.push({ linea: linea, item: item, tipo: "identificador", n: n })
-        if (puntoComa) { n = n + 1; simbolosEspecialesId.push({ linea: linea, item: puntoComa, tipo: "simbolos", n: n }); }
+        if (!(reservadas.indexOf(item) !== -1) && !(tipo.indexOf(item) !== -1) && !(modificadores.indexOf(item) !== -1) && !(comparadores.indexOf(item) !== -1) && !(simbolosEspeciales.indexOf(item) !== -1) && !(booleanLiterales.indexOf(item) !== -1) && !(operadores.indexOf(item) !== -1) && !(int_literales.test(item))) nombresId.push({ linea: linea, item: item, tipo: "identificador", n: n });
+        if (puntoComa) { n = n + 1; simbolosEspecialesId.push({ linea: linea, item: puntoComa, tipo: "simbolos", n: n }); linea = linea + 1; }
         puntoComa = "";
         n = n + 1;
-      } else linea = linea + 1;
+      } /*else {
+        counter = counter + 1;
+        if (counter > 2)
+          linea = linea + 1;
+      }*/
+
     });
 
     console.log("comparadores= ", comparadoresId);
@@ -113,13 +117,18 @@ class Compilador extends Component {
       return 0;
     })
     let k = 0;
+    let arrayDeclaradas = [];
+
     console.log(alphaArray)
     for (let i = 0; i < alphaArray.length; i++) {
 
       switch (alphaArray[i].tipo) {
         case "reservada":
           if (alphaArray[i].item === "class") {
-            if (alphaArray[i + 1].tipo === "identificador") { break }
+            if (alphaArray[i + 1].tipo === "identificador") {
+              arrayDeclaradas.push({ item: alphaArray[i + 1].item, posicion: alphaArray[i + 1].n, linea: alphaArray[i + 1].linea });
+              break;
+            }
           }
           if (alphaArray[i].item === "if" || alphaArray[i].item === "while") {
             if (alphaArray[i + 1].item === "(") { break }
@@ -139,11 +148,14 @@ class Compilador extends Component {
           if (alphaArray[i + 1].tipo === "operador" || (alphaArray[i + 1].tipo === "comparador")) {
             if (alphaArray[i + 1].item !== "=" && (alphaArray[i - 1].tipo === "tipo" || alphaArray[i - 1].tipo === "identificador")) { break }
             if (alphaArray[i + 1].item === "=" && (alphaArray[i - 1].tipo === "tipo")) { break }
-          } else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "identificador") }
+          } else { alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "identificador") }
           break;
 
         case "tipo":
-          if (alphaArray[i + 1].tipo === "identificador") { break }
+          if (alphaArray[i + 1].tipo === "identificador") {
+            arrayDeclaradas.push({ item: alphaArray[i + 1].item, posicion: alphaArray[i + 1].n, linea: alphaArray[i + 1].linea, valor: alphaArray[i + 3].item, linea: alphaArray[i].linea, tipo: alphaArray[i].item })
+            break;
+          }
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + "tipo") }
           break;
         case "comparador":
@@ -151,7 +163,10 @@ class Compilador extends Component {
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "comparador") }
           break;
         case "operador":
-          if ((alphaArray[i + 1].tipo === "identificador") || (alphaArray[i + 1].tipo === "int_literales")) { break }
+          if ((alphaArray[i + 1].tipo === "identificador") || (alphaArray[i + 1].tipo === "int_literales")) {
+            if ((alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales")) { break }
+          }
+
 
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "operador") }
           break;
@@ -175,22 +190,63 @@ class Compilador extends Component {
           if ((alphaArray[i].item === "}") && ((alphaArray[i - 1].item === "}") || (alphaArray[i - 1].item === ";"))) { break }
           if ((alphaArray[i].item === "{") && ((alphaArray[i - 1].item === ")") || (alphaArray[i - 1].tipo === "identificador"))) { break }
           if ((alphaArray[i].item === "(") && ((alphaArray[i - 1].tipo === "reservada"))) { break }
+
           if ((alphaArray[i].item === ")") && ((alphaArray[i - 1].item === ";") || (alphaArray[i - 1].tipo === "identificador") || (alphaArray[i - 1].tipo === "int_literales"))) { break }
           else { k = 1; alert("error sintacticoo" + " " + alphaArray[i].n + " " + alphaArray[i].linea + " " + alphaArray[i].item + " " + "SIM") }
           break;
         default:
-          console.log("Sorry, we are out of " + + ".");
+          alert("AIUAAAA :(");
+      }
+    }
+    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    ///////////////////SEMANTICO/////////////////////////////
+    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    console.log("Declaradas ", arrayDeclaradas);
+
+    let uniqueResultOne = nombresId.filter(function (obj) {
+      return !arrayDeclaradas.some(function (obj2) {
+        return obj.item == obj2.item;
+      });
+    });
+
+    var compareFunction = function (a, b) {
+      return a.item === b.item
+        ? (a.tipo === b.tipo ? 0 : (a.tipo < b.tipo ? -1 : 1))
+        : (a.item < b.item ? -1 : 1);
+    }
+
+    var arrayOrdenado = arrayDeclaradas.sort(compareFunction);
+    var repetidos = [];
+    for (var i = 0; i < arrayOrdenado.length - 1; i++) {
+      if (compareFunction(arrayOrdenado[i + 1], arrayOrdenado[i]) === 0) {
+        repetidos.push(arrayOrdenado[i]);
       }
     }
 
+    function eliminarObjetosDuplicados(arr, prop) {
+      var nuevoArray = [];
+      var lookup = {};
+      for (var i in arr) {
+        lookup[arr[i][prop]] = arr[i];
+      }
+      for (i in lookup) {
+        nuevoArray.push(lookup[i]);
+      }
+      return nuevoArray;
+    }
+
+    var duplicadosEliminados = eliminarObjetosDuplicados(arrayDeclaradas, 'item');
+    console.log(duplicadosEliminados);/// tabla de simbolos
 
 
-
-
+    console.log("variables no definidas ", uniqueResultOne);
+    console.log("variables repetidas ", repetidos);
   };
 
 
-  //////////////////////////////////////////////////////////
+
 
   render() {
     return (
@@ -205,11 +261,11 @@ class Compilador extends Component {
           <div className="col-md-1 col-1 navbar-item">
             <Ionicon icon="logo-css3" color="#d4d4ef" fontSize="14" /> estilos.css
             </div>
-          <div className="col-md-1 col-1 navbar-item-selected">
+          <div className="col-md-2 col-2 navbar-item-selected">
             <Ionicon icon="logo-javascript" color="#ffff62" fontSize="14" /> Compilador.js
             </div>
           <div className="col-md-1 col-1 navbar-execute" onClick={this.compilador}>
-            <a href="" className=""><Ionicon icon="ios-play" color="white" fontSize="14" /> EJECUTAR</a>
+            <a className=""><Ionicon icon="ios-play" color="white" fontSize="14" /> EJECUTAR</a>
           </div>
         </div>
 
@@ -264,47 +320,12 @@ class Compilador extends Component {
             <li className="nav-item">
               <a className="nav-link" href="#">Tabla de Simbolos</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Link</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Disabled</a>
-            </li>
           </ul>
         </div>
 
         <div className="col-md-2 col-2">
         </div>
         <div className="col-md-10 col-10 output-option">
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
-          Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
           Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
           Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
           Ahora si, esta es la salida del código pero necesito que mi novia preciosa me diga como le haremos :3
