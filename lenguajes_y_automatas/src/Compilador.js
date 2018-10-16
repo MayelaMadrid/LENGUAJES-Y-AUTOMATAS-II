@@ -382,7 +382,7 @@ class Compilador extends Component {
         <div className="col-md-2 col-2">
         </div>
         <div className="col-md-10 col-10 output-option">
-          <div ref="tabla">
+          <div ref="tabla" className="ok">
             {duplicadosEliminadoss ?
               <table class="table table-dark">
                 <thead>
@@ -412,7 +412,7 @@ class Compilador extends Component {
                 </tbody>
               </table> : <div>cargando</div>}
           </div>
-          <div ref="out">
+          <div ref="out" className="ok">
 
             {nodefinidas ?
               <table class="table table-dark">
