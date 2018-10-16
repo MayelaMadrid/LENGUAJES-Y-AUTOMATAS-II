@@ -252,7 +252,7 @@ class Compilador extends Component {
         arrayMalDeclaradas.push(duplicadosEliminados[i])
       }
     }
-    console.log(arrayMalDeclaradas);
+    console.log("Variables mal declaradas", arrayMalDeclaradas);
 
   };
 
