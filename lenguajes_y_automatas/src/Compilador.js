@@ -245,7 +245,7 @@ class Compilador extends Component {
       if (duplicadosEliminados[i].tipo === "int" && !int_literales.test(duplicadosEliminados[i].valor)) {
         arrayMalDeclaradas.push(duplicadosEliminados[i])
       }
-      if (duplicadosEliminados[i].tipo === "booleanLiterales" && (duplicadosEliminados[i].valor !== "true" || duplicadosEliminados[i].valor !== "false")) {
+      if (duplicadosEliminados[i].tipo === "boolean" && (duplicadosEliminados[i].valor !== "true" || duplicadosEliminados[i].valor !== "false")) {
         arrayMalDeclaradas.push(duplicadosEliminados[i])
       }
       if (duplicadosEliminados[i].tipo === "string" && !ide_literales.test(duplicadosEliminados[i].valor)) {
