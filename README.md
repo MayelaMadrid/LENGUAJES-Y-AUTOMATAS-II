@@ -1,7 +1,7 @@
 ## Proyecto de Lenguajes y Automatas 2
 
-Diego Armando Pay�n L�pez
+Diego Armando Payán López
 
-Ilse Mayela Madrid Gutierrez
+Ilse Mayela Madrid Gutiérrez
 
-Hernan Enrique Rosales Corvera
+Hernán Enrique Rosales Corvera
