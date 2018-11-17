@@ -1,0 +1,65 @@
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+   
+    if ( x > y ) {
+        resultado = 1+8+6+4+3;
+    }
+}
+
+
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+   
+    if ( x > y ) {
+        resultado = 1+8*6/4;
+    }
+}
+
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+   
+    if ( x > y ) {
+        resultado = b+c*d/e;
+    }
+}
+
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+   
+    if ( x > y ) {
+        resultado = b+-c+b*-c;
+    }
+}
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+   
+    if ( x > y ) {
+        resultado = b*(c+d);
+    }
+}
+
+public class compilador {
+    int x = 5;
+    int y = 10;
+    string resultado = igual;
+    boolean bandera = false;
+   
+    if ( x > y ) {
+        resultado = w*x+(y+z)*-a;
+    }
+}
