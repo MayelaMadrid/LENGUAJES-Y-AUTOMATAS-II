@@ -601,15 +601,68 @@ class Compilador extends Component {
           (alphaArray[i + 1].tipo === 'identificador' ||
             alphaArray[i + 1].tipo === 'int_literales')
         ) {
-          variableDueña = alphaArray[i - 1].item;
-          variableDueñaLinea = alphaArray[i - 1].linea;
-          for (let j = i + 1; j < alphaArray.length; j++) {
+          console.log('ddd', alphaArray[i - 1]);
+          for (let j = i - 1; j < alphaArray.length; j++) {
+            console.log('aaa', alphaArray[i - 1]);
             if (alphaArray[j].item !== ';') {
-              temporal.push(alphaArray[j].item);
               abc = alphaArray[j].item;
-            }
-            {
-              break;
+              var ss = abc.split('');
+              console.log(abc, ss); //
+              var i = 0;
+              let valorT = 1;
+
+              for (let i = 0; i < ss.length; i++) {
+                if (
+                  ss[i] === '-' &&
+                  (ss[i - 1] === '+' ||
+                    ss[i - 1] === '*' ||
+                    ss[i - 1] === '-' ||
+                    ss[i - 1] === '/')
+                ) {
+                  var removed = ss.splice(i, 2, `T${valorT}`);
+                  console.log(removed, valorT);
+                  valorT = valorT + 1;
+                }
+              }
+              for (let i = 0; i < ss.length; i++) {
+                if (ss[i] === '(') {
+                  var removed = ss.splice(i, 5, `T${valorT}`);
+                  console.log(removed, valorT);
+                  valorT = valorT + 1;
+                }
+              }
+
+              for (let i = 0; i < ss.length; i++) {
+                if (ss[i + 1] === '*') {
+                  var removed = ss.splice(i, 3, `T${valorT}`);
+                  console.log(removed, valorT);
+                  valorT = valorT + 1;
+                }
+              }
+
+              for (let i = 0; i < ss.length; i++) {
+                if (ss[i + 1] === '/') {
+                  var removed = ss.splice(i, 3, `T${valorT}`);
+                  console.log(removed, valorT);
+                  valorT = valorT + 1;
+                }
+              }
+
+              for (let i = 0; i < ss.length; i++) {
+                if (ss[i + 1] === '+') {
+                  var removed = ss.splice(i, 3, `T${valorT}`);
+                  console.log(removed, valorT);
+                  valorT = valorT + 1;
+                }
+              }
+
+              for (let i = 0; i < ss.length; i++) {
+                if (ss[i + 1] === '-') {
+                  var removed = ss.splice(i, 3, `T${valorT}`);
+                  valorT = valorT + 1;
+                }
+              }
+              console.log(ss); ///
             }
           }
 
@@ -617,65 +670,6 @@ class Compilador extends Component {
         }
       }
     }
-    var ss = abc.split('');
-    let sin_modificacion = ss;
-    console.log(temporal, abc, ss);
-    let sweet = [];
-    var i = 0;
-    let valorT = 1;
-
-    for (let i = 0; i < ss.length; i++) {
-      if (
-        ss[i] === '-' &&
-        (ss[i - 1] === '+' ||
-          ss[i - 1] === '*' ||
-          ss[i - 1] === '-' ||
-          ss[i - 1] === '/')
-      ) {
-        var removed = ss.splice(i, 2, `T${valorT}`);
-        console.log(removed, valorT);
-        valorT = valorT + 1;
-      }
-    }
-    for (let i = 0; i < ss.length; i++) {
-      if (ss[i] === '(') {
-        var removed = ss.splice(i, 5, `T${valorT}`);
-        console.log(removed, valorT);
-        valorT = valorT + 1;
-      }
-    }
-    console.log(ss);
-    for (let i = 0; i < ss.length; i++) {
-      if (ss[i + 1] === '*') {
-        var removed = ss.splice(i, 3, `T${valorT}`);
-        console.log(removed, valorT);
-        valorT = valorT + 1;
-      }
-    }
-    console.log(ss);
-    for (let i = 0; i < ss.length; i++) {
-      if (ss[i + 1] === '/') {
-        var removed = ss.splice(i, 3, `T${valorT}`);
-        console.log(removed, valorT);
-        valorT = valorT + 1;
-      }
-    }
-    console.log(ss);
-    for (let i = 0; i < ss.length; i++) {
-      if (ss[i + 1] === '+') {
-        var removed = ss.splice(i, 3, `T${valorT}`);
-        console.log(removed, valorT);
-        valorT = valorT + 1;
-      }
-    }
-    console.log(ss);
-    for (let i = 0; i < ss.length; i++) {
-      if (ss[i + 1] === '-') {
-        var removed = ss.splice(i, 3, `T${valorT}`);
-        valorT = valorT + 1;
-      }
-    }
-    console.log(ss);
   };
 
   cambio = () => {

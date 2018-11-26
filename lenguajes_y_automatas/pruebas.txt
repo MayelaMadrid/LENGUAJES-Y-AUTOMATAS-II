@@ -61,5 +61,7 @@ public class compilador {
    
     if ( x > y ) {
         resultado = w*x+(y+z)*-a;
+         resul = b*(c+d);
+         reado = b+-c+b*-c;
     }
 }
