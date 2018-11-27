@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './estilos.css';
 import Ionicon from 'react-ionicons';
@@ -33,6 +33,7 @@ class Compilador extends Component {
  };
 
  compilador = () => {
+   let y = (document.getElementById('chilo').value = ``);
    let linea = 1;
    modificadoresId = [];
    reservadaId = [];
@@ -571,7 +572,6 @@ class Compilador extends Component {
    console.log('Variables mal declaradas', arrayMalDeclaradas);
    this.setState({ malDeclaradas: arrayMalDeclaradas });
 
-
    //////////////////////////TRIPLOS///////////////////////////////////
    let variableDueñaLinea;
    let variableDueña;
@@ -588,15 +588,13 @@ class Compilador extends Component {
            alphaArray[i + 1].tipo === 'int_literales')
        ) {
          for (let j = i - 1; j < alphaArray.length; j++) {
-           if (
-             alphaArray[j].item !== ';' &&
-             alphaArray[j].item !== '}' &&
-             alphaArray[j].item !== '='
-           ) {
+           if (alphaArray[j].item !== ';') {
              abc = alphaArray[j].item;
+             console.log(abc);
              let ss = abc.split('');
+
              if (alphaArray[j - 1].item === '=') {
-               this.repite(ss);
+               this.repite(ss, alphaArray[j - 2].item);
              }
            }
          }
@@ -607,11 +605,11 @@ class Compilador extends Component {
    }
  };
 
- repite = ss => {
+ repite = (ss, variable) => {
    var i = 0;
    let valorT = 1;
    let tempo = '';
-
+   console.log(ss);
    for (let i = 0; i < ss.length; i++) {
      if (
        ss[i] === '-' &&
@@ -623,8 +621,8 @@ class Compilador extends Component {
        var removed = ss.splice(i, 2, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
@@ -633,8 +631,8 @@ class Compilador extends Component {
        var removed = ss.splice(i, 5, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
@@ -642,10 +640,10 @@ class Compilador extends Component {
    for (let i = 0; i < ss.length; i++) {
      if (ss[i + 1] === '*') {
        var removed = ss.splice(i, 3, `T${valorT}`);
-       console.log(`T${valorT} = ${removed}`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
        valorT = valorT + 1;
      }
    }
@@ -655,8 +653,8 @@ class Compilador extends Component {
        var removed = ss.splice(i, 3, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
@@ -666,8 +664,8 @@ class Compilador extends Component {
        var removed = ss.splice(i, 3, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
@@ -677,29 +675,29 @@ class Compilador extends Component {
        var removed = ss.splice(i, 3, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
    for (let i = 0; i < ss.length; i++) {
      if (ss[i + 1] === '*') {
        var removed = ss.splice(i, 3, `T${valorT}`);
-       console.log(`T${valorT} = ${removed}`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
        valorT = valorT + 1;
      }
    }
 
    for (let i = 0; i < ss.length; i++) {
      if (ss[i + 1] === '/') {
-       var removed = ss.splice(i, 3, `T${valorT}`);
+       var removed = ss.splice(i, 3, `T${valorT.join('')}`);
        let y = (document.getElementById(
          'chilo'
        ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
@@ -709,8 +707,8 @@ class Compilador extends Component {
        var removed = ss.splice(i, 3, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
@@ -720,14 +718,14 @@ class Compilador extends Component {
        var removed = ss.splice(i, 3, `T${valorT}`);
        let y = (document.getElementById(
          'chilo'
-       ).value += `T${valorT} = ${removed} \n`);
-       console.log(`T${valorT} = ${removed}`);
+       ).value += `T${valorT} = ${removed.join('')} \n`);
+       console.log(`T${valorT} = ${removed.join('')}`);
        valorT = valorT + 1;
      }
    }
-   let y = (document.getElementById(
-     'chilo'
-   ).value += `T${valorT} = ${ss} \n --------------------------------- \n  `);
+   let y = (document.getElementById('chilo').value += `${variable} = ${ss.join(
+     ''
+   )} \n --------------------------------- \n  `);
    console.log(ss);
    return ss;
  };
@@ -735,12 +733,18 @@ class Compilador extends Component {
  cambio = () => {
    this.refs.out.style.display = 'block';
    this.refs.tabla.style.display = 'none';
+   this.refs.triplos.style.display = 'none';
  };
  tabla = () => {
    this.refs.out.style.display = 'none';
+   this.refs.triplos.style.display = 'none';
    this.refs.tabla.style.display = 'block';
  };
-
+ triplos = () => {
+   this.refs.out.style.display = 'none';
+   this.refs.tabla.style.display = 'none';
+   this.refs.triplos.style.display = 'block';
+ };
  render() {
    let duplicadosEliminadoss = this.state.tabla;
    let nodefinidas = this.state.nodefinidas;
@@ -928,12 +932,21 @@ class Compilador extends Component {
                Tabla de Simbolos
              </a>
            </li>
+           <li className="nav-item">
+             <a className="nav-link" href="#" onClick={this.triplos}>
+               Triplos
+             </a>
+           </li>
          </ul>
        </div>
 
        <div className="col-md-2 col-2" />
        <div className="col-md-10 col-10 output-option">
-         <textarea id="chilo" rows="40" cols="50" />
+         <div ref="triplos" className="ok">
+           {' '}
+           <textarea id="chilo" rows="40" cols="50" />
+         </div>
+
          <div ref="tabla" className="ok">
            {duplicadosEliminadoss ? (
              <table class="table table-dark">
